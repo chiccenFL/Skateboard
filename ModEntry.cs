@@ -111,17 +111,32 @@ namespace Skateboard
         }
         private void AddSkateBoardInfo(IAssetData obj)
         {
-            if (!File.Exists($"{Directory.GetCurrentDirectory()}\\Mods\\Skateboard\\assets\\skateboard.json"))
+            string json = null;
+
+            foreach (var f in Directory.GetFiles(Helper.DirectoryPath, "*.json", SearchOption.AllDirectories))
             {
-                SMonitor.Log("Failed to locate skateboard data.\n\tTroubleshooting options:\n\t(1) Ensure the mod is installed properly, or reinstall it\n\t(2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord\n\t(3) Post a bug report on Nexus if the issue persists and chiccen is unavailable", LogLevel.Error);
-                return;
+                // get relative path of skateboard.json in case it moved. +1 to kill '\' separator
+                json = f.Substring(Helper.DirectoryPath.Length + 1).Contains("skateboard") ? f.Substring(Helper.DirectoryPath.Length + 1) : null;
+                if (json is not null) break;
             }
-            BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>("assets\\skateboard.json");
-            data.DisplayName = Helper.Translation.Get("name");
-            data.Description = Helper.Translation.Get("description");
-            obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
-            //IDictionary<string, BigCraftableData> data = obj.AsDictionary<string, BigCraftableData>().Data;
-            //data.Add(boardIndex, $"'Skateboard'/{Helper.Translation.Get("name")}/{Helper.Translation.Get("description")}/5000/0/true/true/false/'assets/board.png'/null/null/null");
+            try 
+            {
+                BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>(json);
+                obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
+            } 
+            catch (Exception e)
+            {
+                SMonitor.Log(
+                    @"Failed to locate skateboard data.
+                    \tTroubleshooting options:
+                    \t(1) Ensure the mod is installed properly, or reinstall it
+                    \t(2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord
+                    \t(3) Post a bug report on Nexus if the issue persists and chiccen is unavailable
+                    This error won't affect gameplay mechanics, but it will break localization and make some UI pretty ugly.", 
+                    LogLevel.Error
+                );
+                SMonitor.Log($"chiccen.Skateboard encountered an exception: {e.Message}\nStackTrace: {e.StackTrace}", LogLevel.Error);
+            }
         }
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)

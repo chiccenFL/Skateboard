@@ -1,8 +1,8 @@
 {
   "-42424201": {
     "Name": "Skateboard",
-    "DisplayName": "",
-    "Description": "",
+    "DisplayName": "{{i18n: name}}",
+    "Description": "{{i18n: description}}",
     "Price": 5000,
     "Fragility": 0,
     "CanBePlacedOutdoors": true,
