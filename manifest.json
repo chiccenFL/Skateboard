@@ -1,0 +1,22 @@
+{
+  "Name": "Skateboard",
+  "Author": "chiccen",
+  "Version": "0.1.0",
+  "Description": "skamtebord",
+  "UniqueID": "chiccen.Skateboard",
+  "EntryDll": "Skateboard.dll",
+  "MinimumApiVersion": "3.15.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "Skateboard"
+  },
+  "UpdateKeys": [ "Nexus:" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

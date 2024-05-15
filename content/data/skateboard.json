@@ -1,0 +1,16 @@
+{
+  "-42424201": {
+    "Name": "Skateboard",
+    "DisplayName": "",
+    "Description": "",
+    "Price": 5000,
+    "Fragility": 0,
+    "CanBePlacedOutdoors": true,
+    "CanBePlacedIndoors": true,
+    "IsLamp": false,
+    "Texture": "assets/board.png",
+    "SpriteIndex": 0,
+    "ContextTags": null,
+    "CustomFields": null
+  }
+}
