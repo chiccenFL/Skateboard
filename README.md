@@ -20,16 +20,16 @@ Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.
 on the wiki for help contributing translations.  
 Message @chiccen on Discord for details on how you would like to be credited. 
 
-(❑ = untranslated, ↻ = Google Translate/needs revision, ✓ = fully translated)
+(❑ = untranslated, ↻ = Partly Translated, ⍻ = Google translated/needs revision ✓ = fully translated)
 
 &nbsp;     | Skateboard
 :--------- | :----------------
 Chinese    | [❑](./i18n)
 French     | [❑](./i18n)
-German     | [✓](./i18n)
+German     | [↻](./i18n)
 Japanese   | [❑](./i18n)
 Korean     | [❑](./i18n)
-Russian    | [✓](./i18n)
+Russian    | [↻](./i18n)
 Spanish    | [❑](./i18n)
 
 ## Credits and Notes

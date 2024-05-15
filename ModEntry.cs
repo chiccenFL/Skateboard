@@ -92,7 +92,7 @@ namespace Skateboard
         {
             if (e.NameWithoutLocale.IsEquivalentTo(boardKey))
             {
-                e.LoadFromModFile<Texture2D>("content/assets/board.png", StardewModdingAPI.Events.AssetLoadPriority.Low);
+                e.LoadFromModFile<Texture2D>("assets/board.png", StardewModdingAPI.Events.AssetLoadPriority.Low);
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
             {
@@ -111,12 +111,12 @@ namespace Skateboard
         }
         private void AddSkateBoardInfo(IAssetData obj)
         {
-            if (!File.Exists("content\\data\\skateboard.json"))
+            if (!File.Exists($"{Directory.GetCurrentDirectory()}\\Mods\\Skateboard\\assets\\skateboard.json"))
             {
-                SMonitor.Log("Failed to locate skateboard data. Please reinstall the mod, contact @chiccen on the Stardew valley Discord/#modded-game-support, or post a bug report on Nexus", LogLevel.Error);
+                SMonitor.Log("Failed to locate skateboard data.\n\tTroubleshooting options:\n\t(1) Ensure the mod is installed properly, or reinstall it\n\t(2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord\n\t(3) Post a bug report on Nexus if the issue persists and chiccen is unavailable", LogLevel.Error);
                 return;
             }
-            BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>("assets/skateboard.json");
+            BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>("assets\\skateboard.json");
             data.DisplayName = Helper.Translation.Get("name");
             data.Description = Helper.Translation.Get("description");
             obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
