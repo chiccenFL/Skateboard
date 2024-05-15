@@ -5,6 +5,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData.BigCraftables;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Skateboard
 
         public static readonly string boardKey = "aedenthorn.Skateboard/Board";
         public static readonly string sourceKey = "aedenthorn.Skateboard/SourceRect";
-        public static readonly int boardIndex = -42424201;
+        public static readonly string boardIndex = "-42424201";
         public static readonly string skateboardingKey = "aedenthorn.Skateboard/Skateboarding";
 
         public static bool accelerating;
@@ -71,7 +72,7 @@ namespace Skateboard
 
         private static void SpawnSkateboard(string arg1 = null, string[] arg2 = null)
         {
-            var s = new Object(Vector2.Zero, boardIndex.ToString(), false);
+            var s = new Object(Vector2.Zero, boardIndex, false);
             s.modData[boardKey] = "true";
             s.Type = "Skateboard";
             s.Category = -20;
@@ -109,17 +110,16 @@ namespace Skateboard
             data.Add("Skateboard", $"{Config.CraftingRequirements}/Field/{boardIndex}/true/default/{Helper.Translation.Get("name")}");
         }
         private void AddSkateBoardInfo(IAssetData obj)
-        { // the whole Content Patcher thing should be unnecessary, I only include it to verify the user has all necessary files. loading the dictionary does not require it.
-            IContentPack contentPack = Helper.ContentPacks.GetOwned().FirstOrDefault();
-            if (contentPack is null || !contentPack.HasFile("content/data/skateboard.json"))
+        {
+            if (!File.Exists("content\\data\\skateboard.json"))
             {
-                SMonitor.Log("Failed to load skateboard data. Please reinstall the mod, contact @chiccen on the Stardew valley Discord/#modded-game-support, or post a bug report on Nexus", LogLevel.Error);
+                SMonitor.Log("Failed to locate skateboard data. Please reinstall the mod, contact @chiccen on the Stardew valley Discord/#modded-game-support, or post a bug report on Nexus", LogLevel.Error);
                 return;
             }
             BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>("assets/skateboard.json");
             data.DisplayName = Helper.Translation.Get("name");
             data.Description = Helper.Translation.Get("description");
-            obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex.ToString(), Helper.Data.ReadJsonFile<BigCraftableData>("data/BigCraftables.json"));
+            obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
             //IDictionary<string, BigCraftableData> data = obj.AsDictionary<string, BigCraftableData>().Data;
             //data.Add(boardIndex, $"'Skateboard'/{Helper.Translation.Get("name")}/{Helper.Translation.Get("description")}/5000/0/true/true/false/'assets/board.png'/null/null/null");
         }
