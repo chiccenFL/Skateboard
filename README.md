@@ -6,7 +6,7 @@ This update doesn't change much from the original, it primarily brings the mod u
 If I broke something, let me know by submitting a bug report or reaching on Discord (@chiccen). You are also free to contribute to the [Github](https://github.com/chiccenFL/Skateboard).  
 If making a bug report on Nexus, please use the "Bugs" tab and ***not*** "Posts" unless it is a suggestion, a mod conflict, or a very very minor bug.  
 
-## Translating Fruit Tree Tweaks
+## Translating Skateboard
 <!--
 
     This section is auto-generated using a script, there's no need to edit it manually.
