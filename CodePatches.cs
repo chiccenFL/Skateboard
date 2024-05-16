@@ -157,11 +157,12 @@ namespace Skateboard
                 {
                     __result = false;
                     return;
-                }
+                }/*
                 if (speed.Length() <= lastSpeed.Length() - 0.05f * Config.Deceleration)
                 {
                     speed = Vector2.Zero;
-                }
+                }*/
+                speed = Vector2.Zero; // this was supposed to be a test but honestly im just gonna keep it.
             }
         }
 
@@ -222,7 +223,7 @@ namespace Skateboard
                 {
                     speed = Vector2.Zero;
                 }
-                if (accelerating)
+                if (accelerating && !__instance.isColliding(__instance.currentLocation, __instance.Position))
                 {
                     float mult = 0.1f * Config.Acceleration;
                     foreach (var d in Game1.player.movementDirections)
