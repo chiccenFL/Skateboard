@@ -123,6 +123,7 @@ namespace Skateboard
             {
                 BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>(json);
                 obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
+                SMonitor.Log($"Successfully loaded {json}!");
             } 
             catch (Exception e)
             {
@@ -132,7 +133,7 @@ namespace Skateboard
                     \t(1) Ensure the mod is installed properly, or reinstall it
                     \t(2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord
                     \t(3) Post a bug report on Nexus if the issue persists and chiccen is unavailable
-                    This error won't affect gameplay mechanics, but it will break localization and make some UI pretty ugly.", 
+                    This error won't affect gameplay mechanics, but it will break localization and make some UI ugly.", 
                     LogLevel.Error
                 );
                 SMonitor.Log($"chiccen.Skateboard encountered an exception: {e.Message}\nStackTrace: {e.StackTrace}", LogLevel.Error);
