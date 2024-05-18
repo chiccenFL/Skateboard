@@ -1,7 +1,7 @@
 {
   "Name": "Skateboard",
   "Author": "chiccen",
-  "Version": "0.1.0",
+  "Version": "0.1.3",
   "Description": "skamtebord",
   "UniqueID": "chiccen.Skateboard",
   "EntryDll": "Skateboard.dll",
@@ -12,7 +12,7 @@
     "Directory": "_releases",
     "ModFolder": "Skateboard"
   },
-  "UpdateKeys": [ "Nexus:" ],
+  "UpdateKeys": [ "Nexus:24074" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",
