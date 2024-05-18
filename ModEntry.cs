@@ -2,8 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.GameData.BigCraftables;
+using StardewValley.ItemTypeDefinitions;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Skateboard
 
         public static readonly string boardKey = "aedenthorn.Skateboard/Board";
         public static readonly string sourceKey = "aedenthorn.Skateboard/SourceRect";
-        public static readonly string boardIndex = "-42424201";
+        public static readonly string boardIndex = "Skateboard";
         public static readonly string skateboardingKey = "aedenthorn.Skateboard/Skateboarding";
 
         public static bool accelerating;
@@ -55,7 +56,7 @@ namespace Skateboard
             helper.ConsoleCommands.Add("skateboard", "Spawn a skateboard.", SpawnSkateboard);
         }
 
-        private void Player_Warped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
+        private void Player_Warped(object sender, WarpedEventArgs e)
         {
             foreach (var key in e.NewLocation.Objects.Keys.ToArray())
             {
@@ -82,33 +83,36 @@ namespace Skateboard
             }
         }
 
-        private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+        private void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             boardTexture = Game1.content.Load<Texture2D>(boardKey);
             Monitor.Log("loaded skateboard texture");
         }
 
-        private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        private void Content_AssetRequested(object sender, AssetRequestedEventArgs e)
         {
             if (e.NameWithoutLocale.IsEquivalentTo(boardKey))
             {
-                e.LoadFromModFile<Texture2D>("assets/board.png", StardewModdingAPI.Events.AssetLoadPriority.Low);
+                e.LoadFromModFile<Texture2D>("assets/board.png", AssetLoadPriority.Low);
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
             {
                 e.Edit(AddSkateBoardRecipe);
+                SMonitor.Log("loaded skateboard recipe");
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables"))
+            /*else if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
                 e.Edit(AddSkateBoardInfo);
-            }
+            }*/
         }
 
         private void AddSkateBoardRecipe(IAssetData obj)
         {
             IDictionary<string, string> data = obj.AsDictionary<string, string>().Data;
-            data.Add("Skateboard", $"{Config.CraftingRequirements}/Field/{boardIndex}/true/default/{Helper.Translation.Get("name")}");
+            //(Key, Ingredients, (Unused), Yield{Object, Quantity = 1}, Big craftable?, Unlock conditions, Display name)
+            data.Add("Skateboard", $"{Config.CraftingRequirements}/Field/{boardIndex}/false/default/{Helper.Translation.Get("name")}"); //replace last bit with Helper.Translation.Get("name") if you ever get localization fixed
         }
+        /* following method only applies for BigCraftable, which conflicts with ProducerFramework aka a far more popular mod. so we don't use BigCraftable anymore, for now.
         private void AddSkateBoardInfo(IAssetData obj)
         {
             string json = null;
@@ -119,28 +123,28 @@ namespace Skateboard
                 json = f.Substring(Helper.DirectoryPath.Length + 1).Contains("skateboard") ? f.Substring(Helper.DirectoryPath.Length + 1) : null;
                 if (json is not null) break;
             }
-            try 
+            try
             {
-                BigCraftableData data = Helper.Data.ReadJsonFile<BigCraftableData>(json);
-                obj.AsDictionary<string, BigCraftableData>().Data.Add(boardIndex, data);
+                ParsedItemData data = Helper.Data.ReadJsonFile<ParsedItemData>(json);
+                obj.AsDictionary<string, ParsedItemData>().Data.Add(boardIndex, data);
                 SMonitor.Log($"Successfully loaded {json}!");
             } 
             catch (Exception e)
             {
                 SMonitor.Log(
                     @"Failed to locate skateboard data.
-                    \tTroubleshooting options:
-                    \t(1) Ensure the mod is installed properly, or reinstall it
-                    \t(2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord
-                    \t(3) Post a bug report on Nexus if the issue persists and chiccen is unavailable
-                    This error won't affect gameplay mechanics, but it will break localization and make some UI ugly.", 
+                    Troubleshooting options:
+                        (1) Ensure the mod is installed properly, or reinstall it
+                        (2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord
+                        (3) Post a bug report on Nexus if the issue persists and chiccen is unavailable
+                    This error shouldn't affect gameplay mechanics, but it will break localization and make some UI ugly.", 
                     LogLevel.Error
                 );
                 SMonitor.Log($"chiccen.Skateboard encountered an exception: {e.Message}\nStackTrace: {e.StackTrace}", LogLevel.Error);
             }
-        }
+        }*/
 
-        private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
+        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (Config.ModEnabled && Context.CanPlayerMove && e.Button == Config.RideButton && !Game1.currentLocation.isActionableTile((int)Game1.currentCursorTile.X, (int)Game1.currentCursorTile.Y, Game1.player))
             {
@@ -160,7 +164,7 @@ namespace Skateboard
             }
         }
 
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        private void GameLoop_GameLaunched(object sender, GameLaunchedEventArgs e)
         {
 
             // get Generic Mod Config Menu's API (if it's installed)
