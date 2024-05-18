@@ -1,15 +1,22 @@
 {
-  "-42424201": {
+  "Skateboard": {
     "Name": "Skateboard",
-    "DisplayName": "{{i18n: name}}",
-    "Description": "{{i18n: description}}",
+    "DisplayName": "Skateboard",
+    "Description": "Used for skateboarding. Made of maple plywood deck and polyurethane wheels attached by a pair of skateboarding trucks.",
+    "Type": "Trash",
+    "Category": -20,
     "Price": 5000,
-    "Fragility": 0,
-    "CanBePlacedOutdoors": true,
-    "CanBePlacedIndoors": true,
-    "IsLamp": false,
     "Texture": "assets/board.png",
     "SpriteIndex": 0,
+    "Edibility": -300,
+    "IsDrink": false,
+    "Buffs": null,
+    "GeodeDropsDefaultItems": false,
+    "GeodeDrops": null,
+    "ArtifactSpotChances": null,
+    "ExcludeFromFishingCollection": true,
+    "ExcludeFromShippingCollection": true,
+    "ExcludeFromRandomSale": false,
     "ContextTags": null,
     "CustomFields": null
   }
