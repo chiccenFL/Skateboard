@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.ItemTypeDefinitions;
+using StardewValley.GameData.Objects;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -73,10 +73,9 @@ namespace Skateboard
 
         private static void SpawnSkateboard(string arg1 = null, string[] arg2 = null)
         {
-            var s = new Object(Vector2.Zero, boardIndex, false);
-            s.modData[boardKey] = "true";
-            s.Type = "Skateboard";
-            s.Category = -20;
+            //var s = new Object(Vector2.Zero, boardIndex, false);
+            var s = ItemRegistry.Create(boardIndex);
+            s.modData.Add(boardKey, "true");
             if (!Game1.player.addItemToInventoryBool(s, true))
             {
                 Game1.createItemDebris(s, Game1.player.Position, 1, Game1.player.currentLocation);
@@ -100,49 +99,14 @@ namespace Skateboard
                 e.Edit(AddSkateBoardRecipe);
                 SMonitor.Log("loaded skateboard recipe");
             }
-            /*else if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
-            {
-                e.Edit(AddSkateBoardInfo);
-            }*/
         }
 
         private void AddSkateBoardRecipe(IAssetData obj)
         {
             IDictionary<string, string> data = obj.AsDictionary<string, string>().Data;
-            //(Key, Ingredients, (Unused), Yield{Object, Quantity = 1}, Big craftable?, Unlock conditions, Display name)
+            //(Key or Name, Ingredients/(Unused)/Yield{Object/Quantity = 1}/Big craftable?/Unlock conditions/Display name)
             data.Add("Skateboard", $"{Config.CraftingRequirements}/Field/{boardIndex}/false/default/{Helper.Translation.Get("name")}"); //replace last bit with Helper.Translation.Get("name") if you ever get localization fixed
         }
-        /* following method only applies for BigCraftable, which conflicts with ProducerFramework aka a far more popular mod. so we don't use BigCraftable anymore, for now.
-        private void AddSkateBoardInfo(IAssetData obj)
-        {
-            string json = null;
-
-            foreach (var f in Directory.GetFiles(Helper.DirectoryPath, "*.json", SearchOption.AllDirectories))
-            {
-                // get relative path of skateboard.json in case it moved. +1 to kill '\' separator
-                json = f.Substring(Helper.DirectoryPath.Length + 1).Contains("skateboard") ? f.Substring(Helper.DirectoryPath.Length + 1) : null;
-                if (json is not null) break;
-            }
-            try
-            {
-                ParsedItemData data = Helper.Data.ReadJsonFile<ParsedItemData>(json);
-                obj.AsDictionary<string, ParsedItemData>().Data.Add(boardIndex, data);
-                SMonitor.Log($"Successfully loaded {json}!");
-            } 
-            catch (Exception e)
-            {
-                SMonitor.Log(
-                    @"Failed to locate skateboard data.
-                    Troubleshooting options:
-                        (1) Ensure the mod is installed properly, or reinstall it
-                        (2) Contact @chiccen in #modded-game-support in the Official Stardew Valley Discord
-                        (3) Post a bug report on Nexus if the issue persists and chiccen is unavailable
-                    This error shouldn't affect gameplay mechanics, but it will break localization and make some UI ugly.", 
-                    LogLevel.Error
-                );
-                SMonitor.Log($"chiccen.Skateboard encountered an exception: {e.Message}\nStackTrace: {e.StackTrace}", LogLevel.Error);
-            }
-        }*/
 
         private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
